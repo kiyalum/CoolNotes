@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <title>{% block title %}{% endblock %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-dark bg-dark mb-3">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" style="filter: invert(100%)" alt="Logo"
+             width="30" height="30" class="d-inline-block align-text-top">
+        <span class="navbar-brand h1">COOL NOTES</span>
+      </a>
+
+      <div>
+        {% if session.get('user_name') %}
+            <a href="{{ url_for('register') }}" class="btn btn-outline-light">Register</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-light">LogOut</a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-outline-light">Register</a>
+            <a href="{{ url_for('login') }}" class="btn btn-light">Login</a>
+        {% endif %}
+      </div>
+
+    </div>
+  </nav>
+
+  <div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  {% block content %}{% endblock %}

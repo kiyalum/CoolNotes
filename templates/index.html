@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Product Manager
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+
+        {% if note_to_edit %}
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-lg border-primary">
+
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0">Edit Note</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <form action="{{ url_for('update_note', note_id=note_to_edit.id) }}" method="POST">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" name="note_name" class="form-control" value="{{ note_to_edit.name }}" required>
+                                </div>
+
+                                <div class="mb-3">
+
+                                    <label class="form-label">Text</label>
+                                    <textarea name="note_text" class="form-control" rows="5" required>
+                                        {{ note_to_edit.note }}
+                                    </textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select name="category" class="form-select">
+                                        {% for cat in categories %}
+                                            <option value="{{ cat }}" {% if note_to_edit.category == cat %}selected{% endif %}>{{ cat }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-success flex-grow-1">Save Changes</button>
+                                    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% else %}
+            <h1 class="mb-4">ADD NOTE</h1>
+
+            <form class="mb-4" method="POST">
+                <div class="col-md-3 mb-4">
+                    <input type="text" name="note_name" class="form-control" placeholder="Note's name" required>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <textarea name="note_text" class="form-control" placeholder="Note's text" required></textarea>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <select name="category" class="form-select">
+                        {% for category in categories %}
+                            <option value="{{ category }}" {% if choice_category==category %} selected {% endif %}>
+                              {{ category }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-3 mb-4">
+                    <button type="submit" class="btn btn-dark w-100">Add</button>
+                </div>
+            </form>
+
+        <hr class="mb-5">
+
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+            {% for note in notes %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm {% if note.category == 'importantly' %}border-danger{% endif %}">
+
+                        <div class="card-header d-flex justify-content-between align-items-center bg-white">
+                            <h5 class="mb-0 text-truncate" style="max-width: 60%;">{{ note.name }}</h5>
+
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('index', edit_id=note.id) }}" class="btn btn-sm btn-outline-warning">Edit</a>
+                                <a href="{{ url_for('delete_note', name=note.name) }}" class="btn-close small"></a>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <p class="text-muted">{{ note.note }}</p>
+                            <span class="badge {% if note.category == 'importantly' %}bg-danger{% else %}bg-primary{% endif %}">{{ note.category }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
