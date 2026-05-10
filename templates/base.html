@@ -20,11 +20,11 @@
 
       <div>
         {% if session.get('user_name') %}
-            <a href="{{ url_for('register') }}" class="btn btn-outline-light">Register</a>
-            <a href="{{ url_for('logout') }}" class="btn btn-light">LogOut</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light">Register</a>
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-light">LogOut</a>
         {% else %}
-            <a href="{{ url_for('register') }}" class="btn btn-outline-light">Register</a>
-            <a href="{{ url_for('login') }}" class="btn btn-light">Login</a>
+            <a href="{{ url_for('auth.register') }}" class="btn btn-outline-light">Register</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-light">Login</a>
         {% endif %}
       </div>
 
