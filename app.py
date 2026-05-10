@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from string import punctuation, ascii_letters, digits
 
 from models import init_db
 from action_db import *
@@ -81,6 +82,30 @@ def register():
     if request.method == 'POST':
         name = request.form.get('name_user')
         password = request.form.get('password')
+
+        if not name:
+            flash('Please enter a name!', 'danger')
+            return redirect(url_for('register'))
+
+        if len(password) < 6:
+            flash('The password must be at least 6 characters long!', 'danger')
+            return redirect(url_for('register'))
+
+        has_letter = any(char.isalpha() for char in password)
+        has_digit = any(char.isdigit() for char in password)
+        has_special = any(not char.isalnum() for char in password)
+
+        if not has_letter:
+            flash('The password must contain at least one letter!', 'danger')
+            return redirect(url_for('register'))
+
+        if not has_digit:
+            flash('The password must contain at least one digit!', 'danger')
+            return redirect(url_for('register'))
+
+        if not has_special:
+            flash('The password must contain at least one special character!', 'danger')
+            return redirect(url_for('register'))
 
         if user_exists(name):
             flash('User already exists!', 'danger')
