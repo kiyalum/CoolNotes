@@ -13,8 +13,8 @@ def add_note(note_name: str, note_text: str, note_category: str, user_id: int):
     Note.create(name=note_name, note=note_text, category=note_category, user_id=user_id)
 
 # видалення
-def delete_product(name: str, user_id: int):
-    Note.delete().where((Note.user == user_id) & (Note.name == name)).execute()
+def delete_product(note_id: str, user_id: int):
+    Note.delete().where((Note.user == user_id) & (Note.id == note_id)).execute()
 
 '''Юзер'''
 # додавання

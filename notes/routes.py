@@ -46,11 +46,12 @@ def index():
                            choice_category=choice_category,
                            note_to_edit=note_to_edit)
 
-@notes_bp.route('/delete/<name>')
-def delete_note(name):
+@notes_bp.route('/delete/<note_id>')
+def delete_note(note_id):
     user = current_user()
-    delete_product(name, user.id)
-    flash(f'Note "{name}" deleted!', 'info')
+    note = get_note_by_id(note_id, user.id)
+    delete_product(note_id, user.id)
+    flash(f'Note "{note.name}" deleted!', 'info')
     return redirect(url_for('notes.index'))
 
 @notes_bp.route('/update/<note_id>', methods=['GET','POST'])

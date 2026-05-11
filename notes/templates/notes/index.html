@@ -90,7 +90,7 @@ Product Manager
 
                             <div class="d-flex gap-2">
                                 <a href="{{ url_for('notes.index', edit_id=note.id) }}" class="btn btn-sm btn-outline-warning">Edit</a>
-                                <a href="{{ url_for('notes.delete_note', name=note.name) }}" class="btn-close small"></a>
+                                <a href="{{ url_for('notes.delete_note', note_id=note.id) }}" class="btn-close small"></a>
                             </div>
                         </div>
 
